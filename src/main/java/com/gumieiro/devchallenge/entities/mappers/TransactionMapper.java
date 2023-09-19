@@ -1,8 +1,8 @@
-package com.gumieiro.desafiodev.entities.mappers;
+package com.gumieiro.devchallenge.entities.mappers;
 
-import com.gumieiro.desafiodev.dtos.TransactionDTO;
-import com.gumieiro.desafiodev.entities.models.Store;
-import com.gumieiro.desafiodev.entities.models.Transaction;
+import com.gumieiro.devchallenge.dtos.TransactionDTO;
+import com.gumieiro.devchallenge.entities.models.Store;
+import com.gumieiro.devchallenge.entities.models.Transaction;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;

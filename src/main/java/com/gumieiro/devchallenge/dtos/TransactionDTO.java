@@ -1,6 +1,6 @@
-package com.gumieiro.desafiodev.dtos;
+package com.gumieiro.devchallenge.dtos;
 
-import com.gumieiro.desafiodev.entities.enums.TransactionType;
+import com.gumieiro.devchallenge.entities.enums.TransactionType;
 import lombok.Data;
 
 import java.sql.Time;

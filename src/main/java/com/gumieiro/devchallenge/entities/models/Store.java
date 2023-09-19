@@ -1,4 +1,4 @@
-package com.gumieiro.desafiodev.entities.models;
+package com.gumieiro.devchallenge.entities.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

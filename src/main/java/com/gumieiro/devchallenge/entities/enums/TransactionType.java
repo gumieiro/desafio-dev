@@ -1,4 +1,4 @@
-package com.gumieiro.desafiodev.entities.enums;
+package com.gumieiro.devchallenge.entities.enums;
 
 import lombok.Getter;
 

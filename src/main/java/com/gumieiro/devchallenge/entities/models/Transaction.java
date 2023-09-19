@@ -1,7 +1,7 @@
-package com.gumieiro.desafiodev.entities.models;
+package com.gumieiro.devchallenge.entities.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gumieiro.desafiodev.entities.enums.TransactionType;
+import com.gumieiro.devchallenge.entities.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.Data;
 
