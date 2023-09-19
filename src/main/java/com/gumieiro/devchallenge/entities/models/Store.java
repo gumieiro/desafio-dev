@@ -22,4 +22,8 @@ public class Store {
     public Store(String name) {
         setName(name);
     }
+
+    public Double balance() {
+        return this.transactions.stream().mapToDouble(Transaction::getValue).sum();
+    }
 }

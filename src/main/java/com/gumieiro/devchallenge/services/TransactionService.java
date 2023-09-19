@@ -4,11 +4,13 @@ import com.gumieiro.devchallenge.entities.models.Transaction;
 import com.gumieiro.devchallenge.repositories.TransactionRepository;
 import com.gumieiro.devchallenge.services.exceptions.DatabaseException;
 import com.gumieiro.devchallenge.services.exceptions.ResourceNotFoundException;
+import com.gumieiro.devchallenge.services.exceptions.ServiceException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +41,7 @@ public class TransactionService {
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw new ServiceException(e);
         }
     }
 
@@ -51,7 +53,7 @@ public class TransactionService {
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(e.getMessage());
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw new ServiceException(e);
         }
     }
 
@@ -65,5 +67,9 @@ public class TransactionService {
         entity.setTime(obj.getTime());
         entity.setStoreRepresentantName(obj.getStoreRepresentantName());
         entity.setStore(obj.getStore());
+    }
+
+    public Boolean importCNAB(MultipartFile file){
+        return false;
     }
 }

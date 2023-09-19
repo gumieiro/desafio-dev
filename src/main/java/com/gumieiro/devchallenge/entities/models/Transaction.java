@@ -28,6 +28,10 @@ public class Transaction {
     @JoinColumn(name = "store_id")
     private Store store;
 
+    public Double getValue() {
+        return TransactionType.ENTRY.equals(getTransactionType().getType()) ? this.value : this.value*-1;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

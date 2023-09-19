@@ -14,19 +14,18 @@ public enum TransactionType {
     DOC(8, "Incoming DOC", TransactionType.ENTRY, '+'),
     RENTAL(9, "Rental", TransactionType.OUTPUT, '+');
 
-    private static final String ENTRY = "entry";
-    private static final String OUTPUT = "entry";
+    public static final String ENTRY = "entry";
+    public static final String OUTPUT = "entry";
 
-    private int number;
-    private String description;
-    private String type;
-    private char sign;
+    private final int number;
+    private final String description;
+    private final String type;
+    private final char sign;
 
     TransactionType(int number, String description, String type, char sign) {
         this.number = number;
         this.description = description;
         this.type = type;
         this.sign = sign;
-
     }
 }

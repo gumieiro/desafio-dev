@@ -6,6 +6,7 @@ import lombok.Data;
 import java.sql.Time;
 import java.time.Instant;
 import java.util.Date;
+import java.util.InvalidPropertiesFormatException;
 
 @Data
 public class TransactionDTO {
@@ -18,8 +19,8 @@ public class TransactionDTO {
     private String storeRepresentantName;
     private String store;
 
-    TransactionDTO(String data) throws Exception {
-        if(data.length() != 81) throw new Exception("Invalid data source! The data is ");
+    public TransactionDTO(String data) throws Exception {
+        if(data.length() != 81) throw new InvalidPropertiesFormatException("Invalid data source! The data is " + data);
         setTransactionType(TransactionType.valueOf(data.substring(0, 0)));
 
         Instant instant = Instant.parse(data.substring(1,8));
