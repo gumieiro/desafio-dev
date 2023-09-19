@@ -18,4 +18,8 @@ public class Store {
     @JsonIgnore
     @OneToMany(mappedBy = "store")
     private List<Transaction> transactions = new ArrayList<>();
+
+    public Store(String name) {
+        setName(name);
+    }
 }
