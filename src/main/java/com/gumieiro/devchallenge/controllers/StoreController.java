@@ -22,13 +22,13 @@ public class StoreController {
         Store store = service.findByName(name);
         model.addAttribute("store", store);
         model.addAttribute("balance", store.balance());
-        return "fragments/store";
+        return "pages/store";
     }
 
     @GetMapping("/stores")
     public String getAll(Model model) {
         List<Store> stores = service.findAll();
         model.addAttribute("stores", stores);
-        return "fragments/stores";
+        return "pages/store";
     }
 }

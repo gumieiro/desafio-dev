@@ -1,6 +1,7 @@
 package com.gumieiro.devchallenge.controllers.exceptions;
 
 import com.gumieiro.devchallenge.services.exceptions.DatabaseException;
+import com.gumieiro.devchallenge.services.exceptions.GeneralException;
 import com.gumieiro.devchallenge.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,14 @@ public class ControllerExceptionHandler {
     public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest request) {
         String error = "Resource Not Found!";
         HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(GeneralException.class)
+    public ResponseEntity<StandardError> generalError(DatabaseException e, HttpServletRequest request) {
+        String error = "Resource Not Found!";
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }

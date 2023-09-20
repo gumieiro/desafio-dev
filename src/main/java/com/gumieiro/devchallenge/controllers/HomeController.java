@@ -8,6 +8,11 @@ public class HomeController {
 
     @GetMapping("/")
     public String index() {
-        return "fragments/content";
+        return "pages/index";
+    }
+
+    @GetMapping("/error")
+    public String error() {
+        return "pages/index";
     }
 }

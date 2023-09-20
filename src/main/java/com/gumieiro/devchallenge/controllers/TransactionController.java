@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class TransactionController {
@@ -17,13 +18,12 @@ public class TransactionController {
 
     @GetMapping("/transaction/import")
     public String importCNAB() {
-        return "fragments/import";
+        return "pages/import";
     }
 
     @PostMapping("/transaction/import")
-    public String importCNAB(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
-        if (Boolean.TRUE.equals(service.importCNAB(file))) return "redirect:/store";
-        String referer = request.getHeader("Referer");
-        return "redirect:" + referer;
+    public String importCNAB(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) throws Exception {
+        return service.importCNAB(file, redirectAttributes);
+        
     }
 }
