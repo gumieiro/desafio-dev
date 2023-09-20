@@ -3,23 +3,21 @@ package com.gumieiro.devchallenge.entities.mappers;
 import com.gumieiro.devchallenge.dtos.TransactionDTO;
 import com.gumieiro.devchallenge.entities.models.Store;
 import com.gumieiro.devchallenge.entities.models.Transaction;
-import com.gumieiro.devchallenge.repositories.StoreRepository;
 import com.gumieiro.devchallenge.services.StoreService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-import java.util.Objects;
 
+@Component
 @Mapper
 public interface TransactionMapper {
-    @Mapping(source = "store", target = "store")
-    Transaction toModel(TransactionDTO dto);
-
-    @Named("storeStrToStore")
-    public static Store formatToStore(String storeStr) {
+    @Named("storeStrToStoreObj")
+    static Store storeStrToStoreObj(String storeStr) {
         return new StoreService().findByName(storeStr);
     }
+
+    @Mapping(source = "store", target = "store", qualifiedByName = "storeStrToStoreObj", resultType = Store.class)
+    Transaction toModel(TransactionDTO dto);
 }

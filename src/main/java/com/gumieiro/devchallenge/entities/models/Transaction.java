@@ -29,7 +29,7 @@ public class Transaction {
     private Store store;
 
     public Double getValue() {
-        return TransactionType.ENTRY.equals(getTransactionType().getType()) ? this.value : this.value*-1;
+        return TransactionType.ENTRY.equals(getTransactionType().getType()) ? this.value : this.value * -1;
     }
 
     @Override

@@ -22,13 +22,13 @@ public class StoreController {
         Store store = service.findByName(name);
         model.addAttribute("store", store);
         model.addAttribute("balance", store.balance());
-        return "store";
+        return "fragments/store";
     }
 
-    @GetMapping("/store")
-    public String getAll(@PathVariable @NonNull String name, Model model) {
+    @GetMapping("/stores")
+    public String getAll(Model model) {
         List<Store> stores = service.findAll();
         model.addAttribute("stores", stores);
-        return "stores";
+        return "fragments/stores";
     }
 }

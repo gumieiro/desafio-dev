@@ -18,6 +18,7 @@ import java.util.Optional;
 public class StoreService {
     @Autowired
     StoreRepository storeRepository;
+
     public Store findByName(String name) {
         return Objects.requireNonNullElse(storeRepository.findByName(name), new Store(name));
     }
