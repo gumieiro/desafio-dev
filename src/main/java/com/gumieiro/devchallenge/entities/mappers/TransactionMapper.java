@@ -10,7 +10,6 @@ import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
 
 
-@Component
 @Mapper
 public interface TransactionMapper {
     @Named("storeStrToStoreObj")
