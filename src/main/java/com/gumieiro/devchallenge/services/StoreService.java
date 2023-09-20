@@ -5,6 +5,8 @@ import com.gumieiro.devchallenge.repositories.StoreRepository;
 import com.gumieiro.devchallenge.services.exceptions.DatabaseException;
 import com.gumieiro.devchallenge.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class StoreService {
     @Autowired
     StoreRepository storeRepository;
@@ -34,6 +37,11 @@ public class StoreService {
 
     public Store insert(Store obj) {
         return storeRepository.save(obj);
+    }
+
+    public List<Store> insertAll(List<Store> objList) {
+        log.info("Inserting " + objList.size() + " stores in DB");
+        return storeRepository.saveAll(objList);
     }
 
     public void delete(Long id) {

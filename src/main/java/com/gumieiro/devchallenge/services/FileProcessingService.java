@@ -1,17 +1,26 @@
 package com.gumieiro.devchallenge.services;
 
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import java.util.concurrent.BlockingQueue;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
-public class FileProcessingService {
-    private final RabbitTemplate rabbitTemplate;
+import lombok.extern.slf4j.Slf4j;
 
-    public FileProcessingService(RabbitTemplate rabbitTemplate) {
-        this.rabbitTemplate = rabbitTemplate;
-    }
+@Service
+@Slf4j
+public class FileProcessingService {
+    
+    @Autowired
+    private BlockingQueue<String> fileProcessingQueue;
 
     public void processFileAsync(String filepath) {
-        rabbitTemplate.convertAndSend("importing", filepath);
+        try {
+            log.info("Puting " + filepath + " to Queue");
+            fileProcessingQueue.put(filepath);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Error adding message to the queue", e);
+        }
     }
 }

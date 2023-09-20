@@ -1,7 +1,6 @@
 package com.gumieiro.devchallenge.controllers;
 
 import com.gumieiro.devchallenge.services.TransactionService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +23,5 @@ public class TransactionController {
     @PostMapping("/transaction/import")
     public String importCNAB(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) throws Exception {
         return service.importCNAB(file, redirectAttributes);
-        
     }
 }

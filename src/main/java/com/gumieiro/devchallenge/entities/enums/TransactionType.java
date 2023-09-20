@@ -1,5 +1,8 @@
 package com.gumieiro.devchallenge.entities.enums;
 
+import java.util.Arrays;
+import java.util.List;
+
 import lombok.Getter;
 
 @Getter
@@ -27,5 +30,14 @@ public enum TransactionType {
         this.description = description;
         this.type = type;
         this.sign = sign;
+    }
+
+    public static TransactionType getByNumber(int number) {
+        List<TransactionType> transactions = Arrays.asList(TransactionType.values());
+        return transactions
+            .stream()
+            .filter(x -> x.getNumber() == number)
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("No such TransactionType with number: " + number));
     }
 }

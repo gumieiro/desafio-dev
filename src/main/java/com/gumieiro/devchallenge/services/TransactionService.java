@@ -1,6 +1,7 @@
 package com.gumieiro.devchallenge.services;
 
 import com.gumieiro.devchallenge.config.AppConfig;
+import com.gumieiro.devchallenge.dtos.TransactionDTO;
 import com.gumieiro.devchallenge.entities.models.Transaction;
 import com.gumieiro.devchallenge.repositories.TransactionRepository;
 import com.gumieiro.devchallenge.services.exceptions.DatabaseException;
@@ -8,6 +9,8 @@ import com.gumieiro.devchallenge.services.exceptions.GeneralException;
 import com.gumieiro.devchallenge.services.exceptions.ResourceNotFoundException;
 import com.gumieiro.devchallenge.services.exceptions.ServiceException;
 import jakarta.persistence.*;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,6 +29,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class TransactionService {
     @Autowired
     TransactionRepository transactionRepository;
@@ -49,30 +53,9 @@ public class TransactionService {
         return transactionRepository.save(obj);
     }
 
-    public Boolean insertAll(List<Transaction> transactions) {
-        Boolean result = Boolean.FALSE;
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("your-persistence-unit-name");
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-
-        try {
-            for (Transaction transaction : transactions) {
-                em.persist(transaction.getStore());
-                em.persist(transaction);
-            }
-            tx.commit();
-            result = Boolean.TRUE;
-        } catch (Exception e) {
-            if (tx.isActive()) {
-                tx.rollback();
-            }
-            throw new ServiceException(e);
-        } finally {
-            em.close();
-            emf.close();
-        }
-        return result;
+    public List<Transaction> insertAll(List<Transaction> objList) {
+        log.info("Inserting " + objList.size() + " Transactions in DB");
+        return transactionRepository.saveAll(objList);
     }
 
     public void delete(Long id) {
@@ -127,6 +110,7 @@ public class TransactionService {
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
             Path uploadPath = Paths.get(config.getUploadDir()); // Substitua pelo caminho desejado
             Path filePath = uploadPath.resolve(fileName);
+            log.info("Importing file " + fileName);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
@@ -140,11 +124,21 @@ public class TransactionService {
                     outputStream.write(buffer, 0, bytesRead);
                 }
             }
-            redirectAttributes.addFlashAttribute("success-message", "The file was uploading successfully and will be imported.");
+            log.info("File imported to " + filePath);
+            redirectAttributes.addFlashAttribute("success-message",
+                    "The file was uploading successfully and will be imported.");
             fileProcessingService.processFileAsync(filePath.toString());
             return "redirect:/stores";
         } catch (Exception e) {
             throw new GeneralException(e);
         }
+    }
+
+    public List<Transaction> strListToModel(List<String> transactions) {
+        log.info("Reading data and transforming to Transaction Object");
+        return transactions.stream()
+                .map(TransactionDTO::new)
+                .map(TransactionDTO::toModel)
+                .toList();
     }
 }
