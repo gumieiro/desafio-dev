@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity
@@ -33,6 +35,13 @@ public class Transaction {
     public Double getValue() {
         if(this.value == null) return 0D;
         return TransactionType.ENTRY.equals(getTransactionType().getType()) ? this.value : this.value * -1;
+    }
+
+    public String getValueBrl() {
+        if(this.value == null) return "R$ 0,00";
+        Locale locale = new Locale.Builder().setLanguage("pt").setRegion("BR").build();
+        NumberFormat brlFormat = NumberFormat.getCurrencyInstance(locale);
+        return brlFormat.format(getValue());
     }
 
     @Override
@@ -77,10 +86,14 @@ public class Transaction {
         return result;
     }
 
-    public static Double balance(List<Transaction> transaction) {
-        return transaction.stream()
+    public static String balance(List<Transaction> transaction) {
+        Double value = transaction.stream()
             .map(Transaction::getValue)
             .reduce(0.00, Double::sum);
+
+        Locale locale = new Locale.Builder().setLanguage("pt").setRegion("BR").build();
+        NumberFormat brlFormat = NumberFormat.getCurrencyInstance(locale);
+        return brlFormat.format(value);
     }
 
 }

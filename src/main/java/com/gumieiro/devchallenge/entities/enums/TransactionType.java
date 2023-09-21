@@ -18,7 +18,7 @@ public enum TransactionType {
     RENTAL(9, "Rental", TransactionType.OUTPUT, '+');
 
     public static final String ENTRY = "entry";
-    public static final String OUTPUT = "entry";
+    public static final String OUTPUT = "output";
 
     private final int number;
     private final String description;

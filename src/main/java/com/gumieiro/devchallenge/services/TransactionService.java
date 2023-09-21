@@ -137,7 +137,7 @@ public class TransactionService {
             redirectAttributes.addFlashAttribute("success-message",
                     "The file was uploading successfully and will be imported.");
             fileProcessingService.processFileAsync(filePath.toString());
-            return "redirect:/transactions/list";
+            return "redirect:/transaction/list";
         } catch (Exception e) {
             throw new GeneralException(e);
         }

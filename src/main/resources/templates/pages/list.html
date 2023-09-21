@@ -11,7 +11,7 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-secondary bg-secondary">
-            <a class="navbar-brand text-white" href="#">Imported Transactions</a>
+            <a class="navbar-brand text-white" href="/">Home</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -28,11 +28,19 @@
             <div class="row align-items-center">
                 <div class="card w-100 p-5">
                     <div class="card-header">
-                        <h2 class="card-title">
-                            A list of Transactions
-                        </h2>
-                        <div class="right">
-                            <a href="/">Back</a>
+                        <div class="row w-100">
+                            <h2 class="col card-title">
+                                A list of Transactions
+                            </h2>
+                            <div class="col-3 right">
+                                <form action="/transaction/list" method="get">
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" placeholder="Store"
+                                            aria-label="Store" aria-describedby="basic-addon2">
+                                        <span class="input-group-text" id="basic-addon2" th:text="${balance}"></span>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body p-5">
@@ -56,7 +64,7 @@
                                     <td th:text="${item.transactionType.getDescription()}"></td>
                                     <td th:text="${item.occurrenceDate}"></td>
                                     <td th:text="${item.time}"></td>
-                                    <td th:text="${item.value}"></td>
+                                    <td th:class="${item.transactionType.getType() == 'entry'} ? 'text-success' : 'text-danger'" th:text="${item.getValueBrl()}"></td>
                                     <td th:text="${item.documentNumber}"></td>
                                     <td th:text="${item.creditCard}"></td>
                                     <td th:text="${item.storeRepresentantName}"></td>
@@ -66,9 +74,11 @@
                         </table>
                     </div>
                     <div class="card-footer">
-                        <a th:href="@{/transaction/list(page=${items.number})}" th:if="${items.hasPrevious()}">Previous</a>
+                        <a class="btn btn-outline-link" th:href="@{/transaction/list(page=${items.number})}"
+                            th:if="${items.hasPrevious()}">Previous</a>
                         <span th:text="${items.number + 1}"></span>
-                        <a th:href="@{/transaction/list(page=${items.number + 2})}" th:if="${items.hasNext()}">Next Page</a>
+                        <a class="btn btn-outline-link" th:href="@{/transaction/list(page=${items.number + 2})}"
+                            th:if="${items.hasNext()}">Next Page</a>
                     </div>
                 </div>
             </div>
