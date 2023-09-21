@@ -3,15 +3,20 @@ package com.gumieiro.devchallenge.entities.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gumieiro.devchallenge.entities.enums.TransactionType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "transactions")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,32 +28,36 @@ public class Transaction {
     private String creditCard;
     private Time time;
     private String storeRepresentantName;
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "store_id")
-    private Store store;
+    private String store;
 
     public Double getValue() {
+        if(this.value == null) return 0D;
         return TransactionType.ENTRY.equals(getTransactionType().getType()) ? this.value : this.value * -1;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         Transaction that = (Transaction) o;
 
-        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(id, that.id))
+            return false;
         if (!Objects.equals(transactionType, that.transactionType))
             return false;
         if (!Objects.equals(occurrenceDate, that.occurrenceDate))
             return false;
-        if (!Objects.equals(value, that.value)) return false;
+        if (!Objects.equals(value, that.value))
+            return false;
         if (!Objects.equals(documentNumber, that.documentNumber))
             return false;
-        if (!Objects.equals(creditCard, that.creditCard)) return false;
-        if (!Objects.equals(time, that.time)) return false;
+        if (!Objects.equals(creditCard, that.creditCard))
+            return false;
+        if (!Objects.equals(time, that.time))
+            return false;
         if (!Objects.equals(storeRepresentantName, that.storeRepresentantName))
             return false;
         return Objects.equals(store, that.store);
@@ -67,4 +76,11 @@ public class Transaction {
         result = 31 * result + (store != null ? store.hashCode() : 0);
         return result;
     }
+
+    public static Double balance(List<Transaction> transaction) {
+        return transaction.stream()
+            .map(Transaction::getValue)
+            .reduce(0.00, Double::sum);
+    }
+
 }

@@ -6,7 +6,10 @@ import org.springframework.stereotype.Component;
 
 import com.gumieiro.devchallenge.services.consumers.FileImportingConsumer;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@Slf4j
 public class QueueProcessorRunner implements CommandLineRunner {
     
     @Autowired
@@ -15,7 +18,8 @@ public class QueueProcessorRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         // Start the queue processing
-        fileImportingConsumer.processMessages();
+        log.info("STARTING QUEUES");
+        fileImportingConsumer.processFileProcessingQueue();
     }
 
 }

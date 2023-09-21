@@ -14,6 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,13 +43,19 @@ public class TransactionService {
     @Autowired
     private AppConfig config;
 
-    public List<Transaction> findAll() {
-        return transactionRepository.findAll();
+    public Page<Transaction> findAll(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize); 
+        return transactionRepository.findAll(pageable);
     }
 
     public Transaction findById(Long id) {
         Optional<Transaction> transaction = transactionRepository.findById(id);
         return transaction.orElseThrow(() -> new ResourceNotFoundException(id));
+    }
+
+    public Page<Transaction> findAllByStore(String name, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize); 
+        return transactionRepository.findAllByStore(name, pageable);
     }
 
     public Transaction insert(Transaction obj) {
@@ -128,7 +137,7 @@ public class TransactionService {
             redirectAttributes.addFlashAttribute("success-message",
                     "The file was uploading successfully and will be imported.");
             fileProcessingService.processFileAsync(filePath.toString());
-            return "redirect:/stores";
+            return "redirect:/transactions/list";
         } catch (Exception e) {
             throw new GeneralException(e);
         }

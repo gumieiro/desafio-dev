@@ -36,7 +36,39 @@
                         </div>
                     </div>
                     <div class="card-body p-5">
-                       
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Transaction Type</th>
+                                    <th>Transaction Date</th>
+                                    <th>Transaction Time</th>
+                                    <th>Value</th>
+                                    <th>Document Number</th>
+                                    <th>Card Number</th>
+                                    <th>Store Representant's Name</th>
+                                    <th>Store</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item : ${items.content}">
+                                    <td th:text="${item.id}"></td>
+                                    <td th:text="${item.transactionType.getDescription()}"></td>
+                                    <td th:text="${item.occurrenceDate}"></td>
+                                    <td th:text="${item.time}"></td>
+                                    <td th:text="${item.value}"></td>
+                                    <td th:text="${item.documentNumber}"></td>
+                                    <td th:text="${item.creditCard}"></td>
+                                    <td th:text="${item.storeRepresentantName}"></td>
+                                    <td th:text="${item.store}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <a th:href="@{/transaction/list(page=${items.number})}" th:if="${items.hasPrevious()}">Previous</a>
+                        <span th:text="${items.number + 1}"></span>
+                        <a th:href="@{/transaction/list(page=${items.number + 2})}" th:if="${items.hasNext()}">Next Page</a>
                     </div>
                 </div>
             </div>

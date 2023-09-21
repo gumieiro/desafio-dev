@@ -2,6 +2,7 @@ package com.gumieiro.devchallenge.dtos;
 
 import com.gumieiro.devchallenge.entities.enums.TransactionType;
 import com.gumieiro.devchallenge.entities.models.Transaction;
+import com.gumieiro.devchallenge.utils.UtilDateTime;
 
 import lombok.Data;
 
@@ -11,6 +12,7 @@ import java.util.Objects;
 
 @Data
 public class TransactionDTO {
+
     private TransactionType transactionType;
     private Date occurrenceDate;
     private Double value;
@@ -21,18 +23,19 @@ public class TransactionDTO {
     private String store;
 
     public TransactionDTO(String data) {
-        int type = Integer.valueOf(data.substring(0, 0));
+        int type = Integer.valueOf(data.substring(0, 1));
         setTransactionType(TransactionType.getByNumber(type));
-        setOccurrenceDate(Date.valueOf(data.substring(1, 8)));
+        Date date = UtilDateTime.strToSqlDate(data.substring(1, 9));
+        setOccurrenceDate(date);
 
-        String valueStr = Objects.requireNonNullElse(data.substring(9, 18), "0");
+        String valueStr = Objects.requireNonNullElse(data.substring(9, 19), "0");
         Double parsedValue = Double.parseDouble(valueStr) / 100;
         setValue(parsedValue);
-        setDocumentNumber(data.substring(19, 29));
-        setCreditCard(data.substring(30, 41));
-        setTime(Time.valueOf(data.substring(42, 47)));
-        setStoreRepresentantName(data.substring(48, 61));
-        setStore(data.substring(62, 81));
+        setDocumentNumber(data.substring(19, 30));
+        setCreditCard(data.substring(30, 42));
+        setTime(UtilDateTime.strToSqlTime(data.substring(42, 48)));
+        setStoreRepresentantName(data.substring(48, 62));
+        setStore(data.substring(62, 80));
     }
 
     public Transaction toModel() {
@@ -44,6 +47,21 @@ public class TransactionDTO {
         transaction.setCreditCard(this.creditCard);
         transaction.setTime(this.time);
         transaction.setStoreRepresentantName(this.storeRepresentantName);
+        transaction.setStore(store);
         return transaction;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("TransactionDTO: ");
+        
+        sb.append("\ngetTransactionType: " + getTransactionType());
+        sb.append("\ngetOccurrenceDate: " + getOccurrenceDate());
+        sb.append("\ngetValue: " + getValue());
+        sb.append("\ngetDocumentNumber: " + getDocumentNumber());
+        sb.append("\ngetCreditCard: " + getCreditCard());
+        sb.append("\ngetTime: " + getTime());
+        sb.append("\ngetStoreRepresentantName: " + getStoreRepresentantName());
+        return sb.toString();
     }
 }

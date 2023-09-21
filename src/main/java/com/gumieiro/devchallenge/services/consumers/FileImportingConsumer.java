@@ -11,9 +11,7 @@ import java.util.concurrent.BlockingQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gumieiro.devchallenge.entities.models.Store;
 import com.gumieiro.devchallenge.entities.models.Transaction;
-import com.gumieiro.devchallenge.services.StoreService;
 import com.gumieiro.devchallenge.services.TransactionService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +25,6 @@ public class FileImportingConsumer {
     @Autowired
     TransactionService transactionService;
 
-    @Autowired
-    StoreService storeService;
-
     public void processFileProcessingQueue() {
         while (true) {
             log.info("Start queue processing at " + Instant.now());
@@ -37,13 +32,6 @@ public class FileImportingConsumer {
                 String file = fileProcessingQueue.take(); 
                 List<String> lines = readFileAsListOfStrings(file);
                 List<Transaction> transactions = transactionService.strListToModel(lines);
-
-                List<Store> stores = transactions.stream()
-                .map(x -> x.getStore())
-                .toList();
-
-                stores = storeService.insertAll(stores);
-                log.info(stores.size()  + " stores inserted");
 
                 transactions = transactionService.insertAll(transactions);
                 log.info(transactions.size()  + " transactions inserted");
